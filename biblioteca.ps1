@@ -1,5 +1,6 @@
 param([ValidateSet('Menu','Install','Organize','Build','Index')][string]$Action = 'Menu')
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
 
 $Root      = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Tools     = Join-Path $Root 'tools'
