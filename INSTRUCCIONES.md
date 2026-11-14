@@ -5,7 +5,7 @@
 ## Qué necesitas
 - Windows 10 o 11.
 - 16 GB de memoria RAM y una tarjeta gráfica compatible con Vulkan 1.3 y mesh shading (requisitos de NX2navi).
-- Espacio libre en disco. Los juegos y las conversiones ocupan varios GB.
+- Espacio libre en disco: unos 30 GB por juego y 1,5 GB para el lanzador de NX2navi.
 - Tu propio archivo del juego en formato `.nup`, de una copia que hayas obtenido legalmente.
 - Conexión a internet solo para el paso 1.
 
@@ -22,8 +22,8 @@
 
 ## Convertir a nativo
 1. Selecciona el juego en la lista y pulsa **Convertir a nativo**.
-2. Se abrirá el instalador de NX2navi. Sigue sus pasos y espera a que termine. Puede tardar un buen rato: no cierres ninguna ventana.
-3. Al terminar, el juego aparece en la pestaña **3. Juegos nativos**.
+2. Se abrirá el instalador de NX2navi. Windows puede avisar de que no está firmado: pulsa "Más información" y "Ejecutar de todos modos". Después NX2navi construye el juego en su propia ventana: tarda de 10 a 25 minutos y solo se hace una vez. No muevas ni borres los .nup hasta que termine.
+3. Al terminar, el juego aparece en la pestaña **3. Juegos nativos**. Es el lanzador de NX2navi, que prepara los shaders y arranca el juego.
 
 ## Jugar
 1. Ve a la pestaña **3. Juegos nativos**.

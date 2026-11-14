@@ -80,6 +80,9 @@ function Guess-GameName($fileName) {
     return $n
 }
 function Find-GameExe($dir) {
+    $top = Get-ChildItem -LiteralPath $dir -Filter '*.exe' -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -notmatch '(?i)setup|unins|crash|redist' } | Select-Object -First 1
+    if ($top) { return $top }
     Get-ChildItem -LiteralPath $dir -Filter '*.exe' -Recurse -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -notmatch '(?i)setup|unins|crash|redist|vc_redist' } |
         Sort-Object Length -Descending | Select-Object -First 1
@@ -195,7 +198,13 @@ function Do-Build {
     $gdir = [string]$script:lvNup.SelectedItems[0].Tag
     $gname = Split-Path -Leaf $gdir
     if (@(Get-NupFiles $gdir -Recurse).Count -eq 0) { Msg 'Esa carpeta no tiene archivos .nup.' 'Aviso' 'Warning'; return }
-    if (-not (Ask "Se va a convertir '$gname'.`n`nSe abrira el instalador de NX2navi: sigue sus pasos y espera a que termine. Puede tardar y ocupar bastante espacio.`n`nContinuar?")) { return }
+    try {
+        $drv = New-Object System.IO.DriveInfo((Split-Path -Qualifier $Root))
+        if ($drv.AvailableFreeSpace -lt 32GB) {
+            if (-not (Ask ("Solo quedan {0} libres en esta unidad y NX2navi necesita unos 30 GB para cada juego.`n`nContinuar de todos modos?" -f (Format-Size $drv.AvailableFreeSpace)))) { return }
+        }
+    } catch {}
+    if (-not (Ask "Se va a convertir '$gname'.`n`n1) Se abrira el instalador de NX2navi (Windows puede avisar porque no esta firmado: pulsa 'Mas informacion' y 'Ejecutar de todos modos').`n2) Despues NX2navi construye el juego en su propia ventana: tarda de 10 a 25 minutos y solo se hace una vez.`n`nNo muevas ni borres los archivos .nup hasta que termine.`n`nContinuar?")) { return }
     $out = Join-Path $NativeLib $gname
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $tmp = Join-Path $gdir $setup.Name
@@ -203,11 +212,11 @@ function Do-Build {
     try {
         Copy-Item -LiteralPath $setup.FullName -Destination $tmp -Force
         Log "Ejecutando $($setup.Name) en $gdir"
-        $p = Start-Process -FilePath $tmp -WorkingDirectory $gdir -ArgumentList @('--dest', "`"$out`"", '--no-launch') -PassThru
+        $p = Start-Process -FilePath $tmp -WorkingDirectory $gdir -ArgumentList @('--dest', "`"$out`"") -PassThru
         while (-not $p.HasExited) { [System.Windows.Forms.Application]::DoEvents(); Start-Sleep -Milliseconds 200 }
         Log "NX2navi termino con codigo $($p.ExitCode)"
         if ($p.ExitCode -ne 0) { Msg "NX2navi termino con un error (codigo $($p.ExitCode)).`nRevisa que el juego sea compatible y que no falten archivos." 'Aviso' 'Warning' }
-        else { Msg "Terminado. Mira la pestana 'Juegos nativos'." }
+        else { Msg "El instalador ha terminado. NX2navi sigue trabajando en su propia ventana (construir el juego tarda de 10 a 25 minutos).`n`nCuando acabe, el juego aparecera en la pestana 'Juegos nativos'." }
     } finally {
         Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
         Set-Busy $false; Refresh-All
