@@ -15,3 +15,6 @@ Instalador y biblioteca para NX2navi (https://github.com/tangerineturtle1/NX2nav
 - Base y actualizacion no se pueden unir concatenando; se guardan en la misma carpeta y se dejan tal cual.
 - No incluye archivos de juego: necesitas tu propia copia.
 - Si el paso 4 no genera nada, usa la opcion 4 para registrar a mano lo que haya creado NX2navi.
+
+## Aviso legal
+Este repositorio solo contiene un organizador y un descargador. No incluye juegos, claves, volcados ni herramientas para saltarse protecciones, y no enlaza a sitios donde conseguirlos. NX2navi se descarga desde sus releases oficiales (https://github.com/tangerineturtle1/NX2navi) y no se redistribuye aqui. Usa solo archivos de juegos que hayas obtenido legalmente de tu propia copia. No compartas tus .nup ni las compilaciones. Los juegos pertenecen a sus propietarios; este proyecto no esta afiliado a Nintendo ni al autor de NX2navi. Se ofrece sin garantia.
