@@ -1,5 +1,7 @@
 # NX2navi Hub
 
+Ver [INSTRUCCIONES.md](INSTRUCCIONES.md) para el paso a paso.
+
 Programa con ventana para descargar NX2navi (https://github.com/tangerineturtle1/NX2navi), organizar tus `.nup` y guardar los juegos convertidos. No hace falta saber de informatica.
 
 ## Como se usa
