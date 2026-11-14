@@ -248,7 +248,7 @@ function Selected-Or($lv, $fallback) { if ($lv.SelectedItems.Count -gt 0) { [str
 function New-Button($text, $x, $y, $w, $h = 40) {
     $b = New-Object System.Windows.Forms.Button
     $b.Text = $text; $b.Location = New-Object System.Drawing.Point($x, $y); $b.Size = New-Object System.Drawing.Size($w, $h)
-    $b.Anchor = 'Bottom,Left'; $b.FlatStyle = 'System'
+    $b.FlatStyle = 'System'
     return $b
 }
 function New-Label($text, $x, $y, $w, $h) {
@@ -259,21 +259,33 @@ function New-Label($text, $x, $y, $w, $h) {
 function New-List($cols) {
     $lv = New-Object System.Windows.Forms.ListView
     $lv.View = 'Details'; $lv.FullRowSelect = $true; $lv.MultiSelect = $false; $lv.GridLines = $true; $lv.HideSelection = $false
-    $lv.Location = New-Object System.Drawing.Point(10, 60); $lv.Size = New-Object System.Drawing.Size(690, 215)
-    $lv.Anchor = 'Top,Bottom,Left,Right'
+    $lv.Dock = 'Fill'
     foreach ($c in $cols) { [void]$lv.Columns.Add($c[0], $c[1]) }
     return $lv
 }
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'NX2navi Hub (fase de pruebas)'
-$form.Size = New-Object System.Drawing.Size(760, 620)
-$form.MinimumSize = New-Object System.Drawing.Size(760, 620)
+$form.Size = New-Object System.Drawing.Size(760, 640)
+$form.MinimumSize = New-Object System.Drawing.Size(760, 640)
 $form.StartPosition = 'CenterScreen'
 $form.Font = New-Object System.Drawing.Font('Segoe UI', 10)
+$form.Padding = New-Object System.Windows.Forms.Padding(8)
+
+function New-BottomPanel($h) {
+    $p = New-Object System.Windows.Forms.Panel
+    $p.Dock = 'Bottom'; $p.Height = $h
+    return $p
+}
+function New-TopLabel($text) {
+    $l = New-Object System.Windows.Forms.Label
+    $l.Dock = 'Top'; $l.Height = 55; $l.Text = $text
+    $l.Padding = New-Object System.Windows.Forms.Padding(4, 6, 4, 0)
+    return $l
+}
 
 $script:tabs = New-Object System.Windows.Forms.TabControl
-$tabs.Location = New-Object System.Drawing.Point(10, 10); $tabs.Size = New-Object System.Drawing.Size(725, 410); $tabs.Anchor = 'Top,Bottom,Left,Right'
+$tabs.Dock = 'Fill'
 $t1 = New-Object System.Windows.Forms.TabPage; $t1.Text = '1. Instalar'
 $t2 = New-Object System.Windows.Forms.TabPage; $t2.Text = '2. Mis juegos (.nup)'
 $t3 = New-Object System.Windows.Forms.TabPage; $t3.Text = '3. Juegos nativos'
@@ -284,40 +296,48 @@ $t1.Controls.Add((New-Label "Este programa descarga NX2navi (la herramienta que 
 $script:lblSetup = New-Label '' 15 120 680 30
 $lblSetup.Font = New-Object System.Drawing.Font('Segoe UI', 11, [System.Drawing.FontStyle]::Bold)
 $t1.Controls.Add($lblSetup)
-$btnInstall = New-Button 'Descargar / actualizar NX2navi' 15 165 280 50; $btnInstall.Anchor = 'Top,Left'
+$btnInstall = New-Button 'Descargar / actualizar NX2navi' 15 165 280 50
 $t1.Controls.Add($btnInstall)
 $t1.Controls.Add((New-Label "Importante: NX2navi no incluye juegos. Necesitas tu propia copia (.nup). EN FASE DE PRUEBAS: puede fallar o cambiar. La compatibilidad con cada juego depende de NX2navi." 15 240 680 70))
 
-# Pestana 2
-$t2.Controls.Add((New-Label "Paso 2: agrega los archivos .nup de tu juego (completo o en partes). Luego elige el juego en la lista y pulsa 'Convertir a nativo'." 10 10 690 45))
+# Pestana 2 (se usa Dock: primero la lista, luego el panel de botones, al final el texto de arriba)
 $script:lvNup = New-List @(@('Juego', 300), @('Archivos', 80), @('Tamano', 100), @('Fecha', 150))
-$t2.Controls.Add($lvNup)
-$btnAddNup = New-Button 'Agregar archivos .nup...' 10 290 210
-$btnBuild  = New-Button 'Convertir a nativo' 230 290 190
-$btnOpenNup = New-Button 'Abrir carpeta' 430 290 150
+$p2 = New-BottomPanel 100
+$btnAddNup  = New-Button 'Agregar archivos .nup...' 8 8 210
+$btnBuild   = New-Button 'Convertir a nativo' 228 8 190
+$btnOpenNup = New-Button 'Abrir carpeta' 428 8 150
 $script:chkKeep = New-Object System.Windows.Forms.CheckBox
 $chkKeep.Text = 'Conservar tambien el archivo original (ocupa el doble de espacio)'
-$chkKeep.Location = New-Object System.Drawing.Point(10, 338); $chkKeep.Size = New-Object System.Drawing.Size(600, 25); $chkKeep.Anchor = 'Bottom,Left'
-$t2.Controls.AddRange(@($btnAddNup, $btnBuild, $btnOpenNup, $chkKeep))
+$chkKeep.Location = New-Object System.Drawing.Point(8, 58); $chkKeep.Size = New-Object System.Drawing.Size(640, 28)
+$p2.Controls.AddRange(@($btnAddNup, $btnBuild, $btnOpenNup, $chkKeep))
+$t2.Controls.Add($lvNup)
+$t2.Controls.Add($p2)
+$t2.Controls.Add((New-TopLabel "Paso 2: agrega los archivos .nup de tu juego (completo o en partes). Luego elige el juego en la lista y pulsa 'Convertir a nativo'."))
 
 # Pestana 3
-$t3.Controls.Add((New-Label "Paso 3: aqui aparecen los juegos ya convertidos. Elige uno y pulsa 'Jugar'." 10 10 690 45))
 $script:lvNative = New-List @(@('Juego', 260), @('Ejecutable', 150), @('Tamano', 100), @('Fecha', 130))
+$p3 = New-BottomPanel 60
+$btnPlay       = New-Button 'Jugar' 8 8 150
+$btnAddNative  = New-Button 'Agregar uno ya convertido...' 168 8 250
+$btnOpenNative = New-Button 'Abrir carpeta' 428 8 150
+$p3.Controls.AddRange(@($btnPlay, $btnAddNative, $btnOpenNative))
 $t3.Controls.Add($lvNative)
-$btnPlay = New-Button 'Jugar' 10 290 150
-$btnAddNative = New-Button 'Agregar uno ya convertido...' 170 290 250
-$btnOpenNative = New-Button 'Abrir carpeta' 430 290 150
-$t3.Controls.AddRange(@($btnPlay, $btnAddNative, $btnOpenNative))
+$t3.Controls.Add($p3)
+$t3.Controls.Add((New-TopLabel "Paso 3: aqui aparecen los juegos ya convertidos. Elige uno y pulsa 'Jugar'."))
 
+# Parte de abajo: barra, estado y registro
 $script:progress = New-Object System.Windows.Forms.ProgressBar
-$progress.Style = 'Marquee'; $progress.Visible = $false
-$progress.Location = New-Object System.Drawing.Point(10, 428); $progress.Size = New-Object System.Drawing.Size(725, 16); $progress.Anchor = 'Bottom,Left,Right'
-$script:lblStatus = New-Label '' 10 447 725 24; $lblStatus.Anchor = 'Bottom,Left,Right'
+$progress.Style = 'Marquee'; $progress.Visible = $false; $progress.Dock = 'Bottom'; $progress.Height = 16
+$script:lblStatus = New-Label '' 0 0 100 24
+$lblStatus.Dock = 'Bottom'; $lblStatus.Height = 26; $lblStatus.TextAlign = 'MiddleLeft'
 $script:txtLog = New-Object System.Windows.Forms.TextBox
 $txtLog.Multiline = $true; $txtLog.ReadOnly = $true; $txtLog.ScrollBars = 'Vertical'
-$txtLog.Location = New-Object System.Drawing.Point(10, 474); $txtLog.Size = New-Object System.Drawing.Size(725, 100); $txtLog.Anchor = 'Bottom,Left,Right'
+$txtLog.Dock = 'Bottom'; $txtLog.Height = 110
 $txtLog.Font = New-Object System.Drawing.Font('Consolas', 9)
-$form.Controls.AddRange(@($tabs, $progress, $lblStatus, $txtLog))
+$form.Controls.Add($tabs)
+$form.Controls.Add($progress)
+$form.Controls.Add($lblStatus)
+$form.Controls.Add($txtLog)
 
 $btnInstall.Add_Click({ Safe { Do-Install } })
 $btnAddNup.Add_Click({ Safe { Do-AddNup } })
