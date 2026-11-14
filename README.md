@@ -1,5 +1,7 @@
 # NX2navi Hub
 
+> **Fase de pruebas:** este proyecto está en pruebas y puede fallar o cambiar. La compatibilidad con cada juego depende de NX2navi.
+
 Ver [INSTRUCCIONES.md](INSTRUCCIONES.md) para el paso a paso.
 
 Programa con ventana para descargar NX2navi (https://github.com/tangerineturtle1/NX2navi), organizar tus `.nup` y guardar los juegos convertidos. No hace falta saber de informatica.
@@ -15,7 +17,7 @@ Programa con ventana para descargar NX2navi (https://github.com/tangerineturtle1
 
 ## Notas
 - NX2navi no usa `prod.keys`: el `.nup` ya viene descifrado.
-- Segun su documentacion, solo soporta Ocarina of Time (Switch 2, v1.1.1). Otros juegos se pueden guardar en la biblioteca, pero no convertir.
+- Proyecto en fase de pruebas: la compatibilidad con cada juego depende de NX2navi. Otros juegos se pueden guardar en la biblioteca, pero puede que no se puedan convertir.
 - Base y actualizacion no se pueden unir concatenando archivos; se guardan juntos tal cual.
 - No incluye archivos de juego: necesitas tu propia copia.
 - Si algo falla, los detalles estan en `hub.log`.

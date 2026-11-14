@@ -206,7 +206,7 @@ function Do-Build {
         $p = Start-Process -FilePath $tmp -WorkingDirectory $gdir -ArgumentList @('--dest', "`"$out`"", '--no-launch') -PassThru
         while (-not $p.HasExited) { [System.Windows.Forms.Application]::DoEvents(); Start-Sleep -Milliseconds 200 }
         Log "NX2navi termino con codigo $($p.ExitCode)"
-        if ($p.ExitCode -ne 0) { Msg "NX2navi termino con un error (codigo $($p.ExitCode)).`nRevisa que el juego sea Ocarina of Time de Switch 2 (v1.1.1) y que no falten archivos." 'Aviso' 'Warning' }
+        if ($p.ExitCode -ne 0) { Msg "NX2navi termino con un error (codigo $($p.ExitCode)).`nRevisa que el juego sea compatible y que no falten archivos." 'Aviso' 'Warning' }
         else { Msg "Terminado. Mira la pestana 'Juegos nativos'." }
     } finally {
         Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
@@ -266,7 +266,7 @@ function New-List($cols) {
 }
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = 'NX2navi Hub'
+$form.Text = 'NX2navi Hub (fase de pruebas)'
 $form.Size = New-Object System.Drawing.Size(760, 620)
 $form.MinimumSize = New-Object System.Drawing.Size(760, 620)
 $form.StartPosition = 'CenterScreen'
@@ -286,7 +286,7 @@ $lblSetup.Font = New-Object System.Drawing.Font('Segoe UI', 11, [System.Drawing.
 $t1.Controls.Add($lblSetup)
 $btnInstall = New-Button 'Descargar / actualizar NX2navi' 15 165 280 50; $btnInstall.Anchor = 'Top,Left'
 $t1.Controls.Add($btnInstall)
-$t1.Controls.Add((New-Label "Importante: NX2navi no incluye juegos. Necesitas tu propia copia (.nup). Segun su documentacion, solo funciona con The Legend of Zelda: Ocarina of Time de Switch 2 (v1.1.1)." 15 240 680 70))
+$t1.Controls.Add((New-Label "Importante: NX2navi no incluye juegos. Necesitas tu propia copia (.nup). EN FASE DE PRUEBAS: puede fallar o cambiar. La compatibilidad con cada juego depende de NX2navi." 15 240 680 70))
 
 # Pestana 2
 $t2.Controls.Add((New-Label "Paso 2: agrega los archivos .nup de tu juego (completo o en partes). Luego elige el juego en la lista y pulsa 'Convertir a nativo'." 10 10 690 45))

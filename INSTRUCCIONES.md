@@ -1,5 +1,7 @@
 # Instrucciones de NX2navi Hub
 
+> **Fase de pruebas:** este proyecto está en pruebas y puede fallar o cambiar. La compatibilidad con cada juego depende de NX2navi.
+
 ## Qué necesitas
 - Windows 10 o 11.
 - 16 GB de memoria RAM y una tarjeta gráfica compatible con Vulkan 1.3 y mesh shading (requisitos de NX2navi).
@@ -28,7 +30,7 @@
 2. Elige el juego y pulsa **Jugar** (o haz doble clic en él).
 
 ## Para saber
-- **Juegos compatibles:** según la documentación de NX2navi, solo funciona con The Legend of Zelda: Ocarina of Time de Switch 2, versión 1.1.1. Otros `.nup` se pueden guardar en la biblioteca, pero no se pueden convertir.
+- **Fase de pruebas:** la compatibilidad con cada juego depende de NX2navi. Otros `.nup` se pueden guardar en la biblioteca, pero puede que no se puedan convertir.
 - **No hacen falta claves:** el `.nup` ya viene descifrado, así que no se usa `prod.keys`.
 - **Actualizaciones:** vuelve a pulsar **Descargar / actualizar NX2navi** de vez en cuando. Si hay una versión nueva, la baja y borra la anterior.
 - **Ya tengo una conversión hecha:** usa **Agregar uno ya convertido...** en la pestaña 3.
