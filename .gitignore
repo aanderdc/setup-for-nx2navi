@@ -1,0 +1,11 @@
+# Juegos y claves
+*.nup
+*.nsp
+*.xci
+*.nca
+*.keys
+nup/
+nativos/
+# Descargas y generados
+tools/
+indice.md
